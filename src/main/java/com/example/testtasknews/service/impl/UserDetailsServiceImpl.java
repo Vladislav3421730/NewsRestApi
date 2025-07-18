@@ -1,7 +1,7 @@
 package com.example.testtasknews.service.impl;
 
 import com.example.testtasknews.repository.UserRepository;
-import com.example.testtasknews.wrapper.CustomUserDetails;
+import com.example.testtasknews.utils.wrapper.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

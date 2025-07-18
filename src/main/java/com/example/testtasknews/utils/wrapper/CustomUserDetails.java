@@ -1,4 +1,4 @@
-package com.example.testtasknews.wrapper;
+package com.example.testtasknews.utils.wrapper;
 
 import com.example.testtasknews.model.User;
 import lombok.AllArgsConstructor;

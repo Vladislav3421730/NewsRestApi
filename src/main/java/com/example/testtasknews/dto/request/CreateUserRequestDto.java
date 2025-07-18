@@ -1,10 +1,8 @@
 package com.example.testtasknews.dto.request;
 
-import com.example.testtasknews.validation.Roles;
+import com.example.testtasknews.utils.validation.RoleValidation;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class CreateUserRequestDto {
@@ -12,11 +10,12 @@ public class CreateUserRequestDto {
     @NotBlank(message = "username must be not blank")
     private String username;
 
-    @Roles
-    private List<String> roles;
+    @RoleValidation
+    private String role;
 
     @NotBlank(message = "name must be not blank")
     private String name;
+
     @NotBlank(message = "surname must be not blank")
     private String surname;
 

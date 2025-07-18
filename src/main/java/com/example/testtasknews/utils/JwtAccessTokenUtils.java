@@ -1,8 +1,6 @@
 package com.example.testtasknews.utils;
 
-import com.example.testtasknews.model.User;
-import com.example.testtasknews.model.enums.Role;
-import com.example.testtasknews.wrapper.CustomUserDetails;
+import com.example.testtasknews.utils.wrapper.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

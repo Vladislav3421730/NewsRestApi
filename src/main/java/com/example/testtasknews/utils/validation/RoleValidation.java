@@ -1,4 +1,4 @@
-package com.example.testtasknews.validation;
+package com.example.testtasknews.utils.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = RolesValidator.class)
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Roles {
+public @interface RoleValidation {
     String message() default "role must be in ['admin', 'journalist', 'subscriber']";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
