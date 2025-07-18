@@ -5,6 +5,7 @@ import com.example.testtasknews.dto.request.LoginUserRequestDto;
 import com.example.testtasknews.dto.request.TokenRefreshRequestDto;
 import com.example.testtasknews.dto.response.JwtResponseDto;
 import com.example.testtasknews.exception.LoginFailedException;
+import com.example.testtasknews.exception.RegistrationFailedException;
 import com.example.testtasknews.repository.UserRepository;
 import com.example.testtasknews.service.AuthService;
 import com.example.testtasknews.utils.JwtAccessTokenUtils;
@@ -23,6 +24,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtAccessTokenUtils jwtAccessTokenUtils;
+    private final UserRepository userRepository;
 
     @Override
     public JwtResponseDto createAuthToken(LoginUserRequestDto user) {
@@ -44,6 +46,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registerUser(CreateUserRequestDto user) {
+        if(userRepository.existsByUsername(user.getUsername())) {
+            log.error("Username {} is already in use", user.getUsername());
+            throw new RegistrationFailedException("User with login " + user.getUsername() + " already exists in the system");
+        }
+
 
     }
 }

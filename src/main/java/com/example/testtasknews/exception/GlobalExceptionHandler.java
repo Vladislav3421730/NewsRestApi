@@ -1,5 +1,6 @@
 package com.example.testtasknews.exception;
 
+import com.example.testtasknews.dto.error.AppErrorDto;
 import com.example.testtasknews.dto.error.FieldErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,16 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return new ResponseEntity<>(new FieldErrorDto(errors,400), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RegistrationFailedException.class)
+    public ResponseEntity<AppErrorDto> handleRegistrationFailedException(RegistrationFailedException registrationFailedException) {
+        return new ResponseEntity<>(new AppErrorDto(registrationFailedException.getMessage(),400), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(LoginFailedException.class)
+    public ResponseEntity<AppErrorDto> handleLoginFailedException(LoginFailedException loginFailedException) {
+        return new ResponseEntity<>(new AppErrorDto(loginFailedException.getMessage(),400), HttpStatus.BAD_REQUEST);
     }
 
 }
