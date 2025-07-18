@@ -2,6 +2,7 @@ package com.example.testtasknews.utils;
 
 import com.example.testtasknews.model.User;
 import com.example.testtasknews.model.enums.Role;
+import com.example.testtasknews.wrapper.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -31,10 +33,10 @@ public class JwtAccessTokenUtils {
 
     private static final String ROLES = "roles";
 
-    public String generateAccessToken(User user) {
+    public String generateAccessToken(CustomUserDetails user) {
         Map<String, Object> claims = new HashMap<>();
-        List<String> rolesList = user.getRoleSet().stream()
-                .map(Role::getAuthority)
+        List<String> rolesList = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         claims.put(ROLES, rolesList);
