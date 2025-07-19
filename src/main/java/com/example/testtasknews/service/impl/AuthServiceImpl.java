@@ -53,7 +53,6 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void registerUser(CreateUserRequestDto createUserRequestDto) {
 
-        log.info("{}", createUserRequestDto);
         if(userRepository.existsByUsername(createUserRequestDto.getUsername())) {
             log.error("Username {} is already in use", createUserRequestDto.getUsername());
             throw new RegistrationFailedException("User with login " + createUserRequestDto.getUsername() + " already exists in the system");

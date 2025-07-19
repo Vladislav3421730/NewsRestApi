@@ -19,6 +19,13 @@ public class CustomUserDetails implements UserDetails {
         return user.getRoleSet();
     }
 
+    public CustomUserDetails(Long userId, String username) {
+        user = User.builder()
+                .id(userId)
+                .name(username)
+                .build();
+    }
+
     public Long getId() {
         return user.getId();
     }

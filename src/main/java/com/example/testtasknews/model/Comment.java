@@ -27,7 +27,7 @@ public class Comment {
     private String text;
 
     @CreatedDate
-    @Column(name = "creation_date", nullable = false, updatable = false)
+    @Column(name = "creation_date", updatable = false)
     private LocalDateTime creationDate;
 
     @LastModifiedDate

@@ -1,6 +1,9 @@
 package com.example.testtasknews.config;
 
+import com.example.testtasknews.utils.wrapper.CustomUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -8,17 +11,17 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("auditorAware")
+@Slf4j
 public class AuditorAwareImpl implements AuditorAware<Long> {
 
     @Override
     public Optional<Long> getCurrentAuditor() {
-//        // Пример: получаем ID пользователя из SecurityContext
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-//            return Optional.of(userDetails.getId());
-//        }
-//        // Если пользователь не найден, возвращаем системного (например, ID = 0)
-        return Optional.of(0L);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() &&
+                !(authentication.getPrincipal() instanceof String) ) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            return Optional.of(userDetails.getId());
+        }
+        return Optional.empty();
     }
 }

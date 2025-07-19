@@ -26,6 +26,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new FieldErrorDto(errors,400), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<AppErrorDto> handleEntityNotFoundException(EntityNotFoundException entityNotFoundException) {
+        return new ResponseEntity<>(new AppErrorDto(entityNotFoundException.getMessage(),404), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(RegistrationFailedException.class)
     public ResponseEntity<AppErrorDto> handleRegistrationFailedException(RegistrationFailedException registrationFailedException) {
         return new ResponseEntity<>(new AppErrorDto(registrationFailedException.getMessage(),400), HttpStatus.BAD_REQUEST);
@@ -34,6 +39,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(LoginFailedException.class)
     public ResponseEntity<AppErrorDto> handleLoginFailedException(LoginFailedException loginFailedException) {
         return new ResponseEntity<>(new AppErrorDto(loginFailedException.getMessage(),400), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<AppErrorDto> handleAccessDeniedException(AccessDeniedException accessDeniedException) {
+        return new ResponseEntity<>(new AppErrorDto(accessDeniedException.getMessage(), 403), HttpStatus.FORBIDDEN);
     }
 
 }

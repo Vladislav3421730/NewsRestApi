@@ -30,6 +30,7 @@ public class JwtAccessTokenUtils {
     private Duration jwtLifetime;
 
     private static final String ROLES = "roles";
+    private static final String USER_ID = "userId";
 
     public String generateAccessToken(CustomUserDetails user) {
         Map<String, Object> claims = new HashMap<>();
@@ -38,6 +39,7 @@ public class JwtAccessTokenUtils {
                 .collect(Collectors.toList());
 
         claims.put(ROLES, rolesList);
+        claims.put(USER_ID, user.getId());
 
         Date issuedDate = new Date();
         return Jwts.builder()
@@ -64,6 +66,10 @@ public class JwtAccessTokenUtils {
 
     public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get(ROLES, List.class);
+    }
+
+    public Long getId(String token) {
+        return getAllClaimsFromToken(token).get(USER_ID, Long.class);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.testtasknews.config;
 import com.example.testtasknews.dto.error.AppErrorDto;
 import com.example.testtasknews.utils.Constants;
 import com.example.testtasknews.utils.JwtAccessTokenUtils;
+import com.example.testtasknews.utils.wrapper.CustomUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -21,6 +22,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    JwtAccessTokenUtils jwtAccessTokenUtils;
+    private final JwtAccessTokenUtils jwtAccessTokenUtils;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -72,8 +74,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            Long userId = jwtAccessTokenUtils.getId(jwt);
+            CustomUserDetails customUserDetails = new CustomUserDetails(userId, username);
+
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    username,
+                    customUserDetails,
                     null,
                     jwtAccessTokenUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
