@@ -17,7 +17,10 @@ import com.example.testtasknews.service.CommentService;
 import com.example.testtasknews.utils.CheckPrivacy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.tool.schema.spi.CommandAcceptanceException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "comment_list", allEntries = true),
+            @CacheEvict(value = "news_item", key = "'id_'+#createRequestDto.newId")
+    })
     public void save(CreateCommentRequestDto createRequestDto) {
         if (!newsRepository.existsById(createRequestDto.getNewId())) {
             log.error("News with id {} wasn't found", createRequestDto.getNewId());
@@ -50,6 +57,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "comment_list", key = "'page_'+#pageRequest.pageNumber+'_'+#pageRequest.pageSize+'_'+#pageRequest.sort")
     public PageResponseDto<CommentResponseDto> findAll(PageRequest pageRequest) {
         Page<CommentResponseDto> comments = commentRepository.findAll(pageRequest)
                 .map(commentMapper::toDto);
@@ -58,6 +66,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "comment_item", key = "'id_'+#id")
     public CommentResponseDto findById(Long id) {
         return commentRepository.findById(id)
                 .map(commentMapper::toDto)
@@ -69,6 +78,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "comment_item", key = "'id_'+#id"),
+            @CacheEvict(value = "comment_list", allEntries = true)
+    })
     public void deleteById(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> {
             log.error("Comment with id {} wasn't found", id);
@@ -80,6 +93,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @Caching(put = {
+            @CachePut(value = "comment_item", key = "'id_'+#updateRequestDto.id")
+    }, evict = {
+            @CacheEvict(value = "comment_list", allEntries = true)
+    })
     public void update(UpdateCommentRequestDto updateRequestDto) {
         Comment comment = commentRepository.findById(updateRequestDto.getId()).orElseThrow(() -> {
             log.error("Comment with id {} wasn't found", updateRequestDto.getId());

@@ -13,6 +13,10 @@ import com.example.testtasknews.service.NewsService;
 import com.example.testtasknews.utils.CheckPrivacy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,6 +33,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "news_list", allEntries = true)
     public void save(CreateNewsRequestDto newsRequestDto) {
         News news = News.builder()
                 .text(newsRequestDto.getText())
@@ -39,6 +44,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @Cacheable(value = "news_list", key = "'page_'+#pageRequest.pageNumber+'_'+#pageRequest.pageSize+'_'+#pageRequest.sort")
     public PageResponseDto<NewsResponseDto> findAll(PageRequest pageRequest) {
         Page<NewsResponseDto> page = newsRepository.findAll(pageRequest)
                 .map(newsMapper::toDto);
@@ -46,6 +52,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @Cacheable(value = "news_item", key = "'id_'+#id")
     public NewsResponseDto findById(Long id) {
         return newsRepository.findById(id)
                 .map(newsMapper::toDto)
@@ -57,8 +64,12 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "news_item", key = "'id_'+#id"),
+            @CacheEvict(value = "news_list", allEntries = true)
+    })
     public void deleteById(Long id) {
-        News news = newsRepository.findById(id).orElseThrow(()-> {
+        News news = newsRepository.findById(id).orElseThrow(() -> {
             log.error("News with id {} wasn't found", id);
             throw new NewsNotFoundException("News with id " + id + " wasn't found");
         });
@@ -68,8 +79,13 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
+    @Caching(put = {
+            @CachePut(value = "news_item", key = "'id_'+#newsRequestDto.id")
+    }, evict = {
+            @CacheEvict(value = "news_list", allEntries = true)
+    })
     public void update(UpdateNewsRequestDto newsRequestDto) {
-        News news = newsRepository.findById(newsRequestDto.getId()).orElseThrow(()-> {
+        News news = newsRepository.findById(newsRequestDto.getId()).orElseThrow(() -> {
             log.error("News with id {} wasn't found", newsRequestDto.getId());
             throw new NewsNotFoundException("News with id " + newsRequestDto.getId() + " wasn't found");
         });
