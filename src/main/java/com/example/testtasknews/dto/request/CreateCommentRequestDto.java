@@ -5,6 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for creating comments.
+ * <p>
+ * Contains information required to create a new comment for a news article.
+ */
 @Data
 public class CreateCommentRequestDto {
 

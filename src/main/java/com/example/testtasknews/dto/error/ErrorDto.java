@@ -8,6 +8,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Abstract base class for error Data Transfer Objects.
+ * <p>
+ * Provides common fields for error code and timestamp.
+ */
 @Data
 public abstract class ErrorDto {
 

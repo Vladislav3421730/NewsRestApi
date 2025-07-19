@@ -4,6 +4,11 @@ import com.example.testtasknews.utils.validation.RoleValidation;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for user registration requests.
+ * <p>
+ * Contains user information required for creating a new user account.
+ */
 @Data
 public class CreateUserRequestDto {
 

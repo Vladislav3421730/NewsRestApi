@@ -9,6 +9,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing a comment on a news article.
+ * <p>
+ * Stores comment content, audit metadata, and references to the news and user.
+ */
 @Entity
 @Table(name = "comment")
 @EntityListeners(AuditingEntityListener.class)

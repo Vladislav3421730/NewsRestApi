@@ -15,6 +15,11 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
 
+/**
+ * Configuration class for application caching.
+ * <p>
+ * Sets up cache manager and cache-related settings for the application.
+ */
 @Configuration
 public class CacheConfig {
 

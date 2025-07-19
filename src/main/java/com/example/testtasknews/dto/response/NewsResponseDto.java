@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Data Transfer Object for news article responses.
+ * <p>
+ * Contains information about a news article returned to the client.
+ */
 @Data
 public class NewsResponseDto {
 

@@ -1,17 +1,49 @@
 services:
+  api:
+    image: api:latest
+    build: .
+    container_name: api
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8080:8080"
+    networks:
+      - apinetwork
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATA_REDIS_HOST: ${SPRING_DATA_REDIS_HOST}
+      SPRING_DATA_REDIS_PORT: ${SPRING_DATA_REDIS_PORT}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
 
   postgres:
     image: postgres:latest
     container_name: postgres
     environment:
-      POSTGRES_DB: news
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ${DB}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD:  ${DB_PASSWORD}
     ports:
       - "5432:5432"
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    networks:
+      - apinetwork
 
   redis:
     image: redis:6.2
     container_name: redis
     ports:
       - "6379:6379"
+    networks:
+      - apinetwork
+
+volumes:
+  postgresdata:
+    driver: local
+
+networks:
+  apinetwork:
+    driver: bridge

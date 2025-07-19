@@ -5,6 +5,11 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * Data Transfer Object for field-level validation errors.
+ * <p>
+ * Contains a map of field names to error messages and an HTTP status code.
+ */
 @Getter
 @Setter
 public class FieldErrorDto extends ErrorDto {

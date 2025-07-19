@@ -6,6 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for updating news articles.
+ * <p>
+ * Contains information required to update an existing news entry.
+ */
 @Data
 public class UpdateNewsRequestDto {
 

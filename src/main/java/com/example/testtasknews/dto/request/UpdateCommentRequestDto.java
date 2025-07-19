@@ -5,6 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for updating comments.
+ * <p>
+ * Contains information required to update an existing comment.
+ */
 @Data
 public class UpdateCommentRequestDto {
 

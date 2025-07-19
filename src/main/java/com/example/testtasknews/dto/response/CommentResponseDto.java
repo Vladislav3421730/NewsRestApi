@@ -5,6 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object for comment responses.
+ * <p>
+ * Contains information about a comment returned to the client.
+ */
 @Data
 public class CommentResponseDto {
 

@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Entity representing a user in the system.
+ * <p>
+ * Stores user credentials, personal information, roles, and audit metadata.
+ */
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)

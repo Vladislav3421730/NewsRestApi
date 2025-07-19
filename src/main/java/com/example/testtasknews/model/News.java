@@ -12,6 +12,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entity representing a news article.
+ * <p>
+ * Stores news content, audit metadata, and associated comments.
+ */
 @Entity
 @Table(name = "news")
 @EntityListeners(AuditingEntityListener.class)

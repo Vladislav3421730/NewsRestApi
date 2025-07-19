@@ -3,6 +3,11 @@ package com.example.testtasknews.dto.error;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Data Transfer Object for application-level error responses.
+ * <p>
+ * Contains error message and HTTP status code for API error handling.
+ */
 @Getter
 @Setter
 public class AppErrorDto extends ErrorDto {
