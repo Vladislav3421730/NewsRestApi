@@ -1,6 +1,7 @@
 package com.example.testtasknews.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * Contains credentials required for user authentication.
  */
 @Data
+@AllArgsConstructor
 public class LoginUserRequestDto {
 
     @NotBlank(message = "Username must be not null")

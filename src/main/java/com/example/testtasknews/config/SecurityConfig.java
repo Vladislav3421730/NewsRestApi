@@ -33,19 +33,6 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    private static final String[] SWAGGER_WHITELIST = {
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/configuration/**"
-    };
-
     /**
      * Configures the security filter chain for HTTP requests.
      * <p>
@@ -63,11 +50,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/news/**", "/api/v1/comment/**").permitAll()
                         .requestMatchers("/api/v1/news/**").hasAnyRole("JOURNALIST", "ADMIN")
                         .requestMatchers("/api/v1/comment/**").hasAnyRole("SUBSCRIBER", "ADMIN")
-                        .anyRequest().hasRole("ADMIN")
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex
